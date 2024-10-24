@@ -33,7 +33,7 @@ io.on("connection", (socket) => {
         // });
 
         // msg.receivedBy should be an array of user IDs
-        const receiverSocketIds = msg.recievedby.map(userId => userMap.get(userId.toString())).filter(id => id); // get socket IDs from userMap
+        const receiverSocketIds = msg.recievedby.map(userId => userMap.get(userId.toString()))//.filter(id => id); // get socket IDs from userMap
         
         console.log("receiverSocketIds", receiverSocketIds);
 
@@ -47,6 +47,9 @@ io.on("connection", (socket) => {
 
 
 
+    });
+    socket.on("disconnect", () => {
+        console.log("User disconnected");
     });
 });
 
