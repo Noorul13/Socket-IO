@@ -44,9 +44,6 @@ const userMap = new Map();
 //                 msg: msg.msg
 //             });
 //         });
-
-
-
 //     });
 //     socket.on("disconnect", () => {
 //         console.log("User disconnected");
@@ -54,6 +51,7 @@ const userMap = new Map();
 // });
 
 
+/*
 // Chat namespace
 
 const chatNamespace = io.of("/chat");
@@ -74,7 +72,31 @@ newsNamespace.on("connection", (socket) => {
   });
 });
 
+*/
 
+// ROOMS
+io.on('connection', (socket) => {
+   console.log('A user connected');
+
+   // Join a room
+   socket.on('joinRoom', (room) => {
+       console.log(room);
+       socket.join(room.id);
+       console.log(`User joined room: ${room.id}`);
+   });
+
+   // Listen for messages in a room
+   socket.on('sendmessage', (data) => {
+      console.log(data);
+       const { room, message } = data;
+       io.to(room).emit('recievemessage', message);
+   });
+
+   // Handle user disconnect
+   socket.on('disconnect', () => {
+       console.log('User disconnected');
+   });
+});
 
 server.listen(PORT, () => {
     console.log(`Server listen on ${PORT}`);
